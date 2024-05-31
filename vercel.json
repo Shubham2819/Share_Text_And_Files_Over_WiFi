@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "ssavr",
+  "builds": [
+    {
+      "src": "./api/index.php",
+      "use": "@vercel/php"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "ssavr-coral.vercel.app/api/"
+    }
+  ]
+}
