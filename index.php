@@ -227,7 +227,6 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
         }
     </style>
 </head>
-
 <body class="light-mode">
     <div class="header">
         <div class="logo">Share Text</div>
