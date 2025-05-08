@@ -231,18 +231,26 @@ $sharedText = file_exists('shared_text.txt') ? file_get_contents('shared_text.tx
         linksList.style.display = 'block'; // Show the list
         links.forEach(function(link) {
             var listItem = document.createElement('li');
-            var linkText = document.createTextNode(link);
+            listItem.classList.add('d-flex', 'justify-content-between', 'align-items-center');
+
+            // Create a text node for the URL (link)
+            var linkText = document.createElement('span');
+            linkText.textContent = link;
+            linkText.classList.add('mr-3'); // Optional: Adds some margin to the right of the link text
 
             // Create a 'Go To Website' button
             var button = document.createElement('button');
             button.textContent = 'Go To Website';
-            button.classList.add('btn', 'btn-info', 'mx-2');
+            button.classList.add('btn', 'btn-info');
             button.onclick = function() {
                 window.open(link, '_blank'); // Open the link in a new tab
             };
 
+            // Append the link and button to the list item
             listItem.appendChild(linkText);
-            listItem.appendChild(button); // Add the button to the list item
+            listItem.appendChild(button);
+
+            // Append the list item to the links list
             linksList.appendChild(listItem);
         });
     } else {
@@ -290,5 +298,4 @@ $sharedText = file_exists('shared_text.txt') ? file_get_contents('shared_text.tx
         });
     </script>
 </body>
-
 </html>
