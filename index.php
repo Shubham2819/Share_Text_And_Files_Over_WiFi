@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
         }
 
         // Move file if it's under the size limit
-        if ($fileSize <= 262144000) { 
+        if ($fileSize <= 262144000) {
             if (!move_uploaded_file($tmpName, $target)) {
                 $success = false;
                 break;
@@ -40,11 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
     echo $success ? 'success' : 'error';
     exit;
 }
-
-
-
 // Handle file list
-// List files
+// List files in the uploads directory
+// This will be used to display the list of uploaded files
 if (isset($_GET['files'])) {
     $files = array_values(array_filter(scandir('uploads'), fn($f) => !is_dir("uploads/$f")));
     $list = array_map(function ($file) {
@@ -75,8 +73,6 @@ if (isset($_GET['delete'])) {
     }
     exit;
 }
-
-
 // Load shared text
 $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : '';
 
@@ -129,12 +125,6 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
             top: 10px;
             z-index: 9999;
         }
-
-        /* textarea {
-            width: 80%;
-            height: 300px;
-            margin: 20px auto;
-        } */
 
         textarea {
             width: 70%;
@@ -212,12 +202,6 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
             padding: 0;
         }
 
-        /* #linksList {
-            margin-top: 20px;
-            list-style-type: none;
-            padding: 0;
-        } */
-
         #linksList li {
             background-color: #1e2931;
             padding: 10px;
@@ -227,78 +211,77 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
         }
     </style>
 </head>
+
 <body class="light-mode">
     <div class="header">
         <div class="logo">Share Text</div>
-        
-       
-            <button id="themeSwitcher" class="btn btn-secondary" onclick="toggleTheme()">Light Mode</button>
-      
+        <button id="themeSwitcher" class="btn btn-secondary" onclick="toggleTheme()">Light Mode</button>
     </div>
-     <!-- progress bar and upload alert -->
-     <div id="uploadProgressContainer" style="display: none; position: fixed; bottom: 20px; right: 20px; width: 300px; z-index: 9999;">
-    <div class="progress">
-        <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info" 
-             role="progressbar" style="width: 0%">0%</div>
+    <!-- progress bar and upload alert -->
+    <div id="uploadProgressContainer"
+        style="display: none; position: fixed; bottom: 20px; right: 20px; width: 300px; z-index: 9999;">
+        <div class="progress">
+            <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                role="progressbar" style="width: 0%">0%</div>
+        </div>
     </div>
-</div>
     <div class="container mt-4">
         <h1>Share Text over WiFi!</h1>
         <textarea id="textInput" name="text"><?php echo htmlspecialchars($sharedText); ?></textarea>
         <br>
         <ul id="linksList"></ul>
         <div class="d-flex justify-content-center">
-            <div id="copyAlert" class="alert alert-success text-center" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999;">
+            <div id="copyAlert" class="alert alert-success text-center"
+                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999;">
                 Text copied to clipboard!
                 <button type="button" class="close" onclick="closeAlert()">&times;</button>
             </div>
-            <div id="deleteAlert" class="alert alert-success text-center" style="display: none; position: fixed; top: 70px; right: 20px; z-index: 9999;">
-    File deleted successfully!
-    <button type="button" class="close" onclick="closeAlert('deleteAlert')">&times;</button>
-</div>
-<div id="uploadAlert" class="alert alert-success text-center" style="display: none; position: fixed; top: 120px; right: 20px; z-index: 9999;">
-    Upload status here.
-    <button type="button" class="close" onclick="closeAlert('uploadAlert')">&times;</button>
-</div>
-
-
-<div id="uploadAlert" class="alert alert-success text-center" style="display: none; position: fixed; top: 120px; right: 20px; z-index: 9999;">
-    Upload status here.
-    <button type="button" class="close" onclick="closeAlert('uploadAlert')">&times;</button>
-</div>
-
-
-
+            <div id="deleteAlert" class="alert alert-success text-center"
+                style="display: none; position: fixed; top: 70px; right: 20px; z-index: 9999;">
+                File deleted successfully!
+                <button type="button" class="close" onclick="closeAlert('deleteAlert')">&times;</button>
+            </div>
+            <div id="uploadAlert" class="alert alert-success text-center"
+                style="display: none; position: fixed; top: 120px; right: 20px; z-index: 9999;">
+                Upload status here.
+                <button type="button" class="close" onclick="closeAlert('uploadAlert')">&times;</button>
+            </div>
+            <div id="uploadAlert" class="alert alert-success text-center"
+                style="display: none; position: fixed; top: 120px; right: 20px; z-index: 9999;">
+                Upload status here.
+                <button type="button" class="close" onclick="closeAlert('uploadAlert')">&times;</button>
+            </div>
             <button class="btn btn-primary mx-2" onclick="copyText()">Copy</button>
             <button class="btn btn-secondary mx-2" onclick="displayLinks()">Links</button>
             <!-- <button class="btn btn-success mx-2">Upload</button>
             <button class="btn btn-warning mx-2">Download</button> -->
-            <button class="btn btn-success btn-custom mr-2" onclick="document.getElementById('fileInput').click()">⬆️ Share File</button>
+            <button class="btn btn-success btn-custom mr-2" onclick="document.getElementById('fileInput').click()">⬆️
+                Share File</button>
             <button class="btn btn-warning btn-custom" onclick="showFiles()">📂 Show Files</button>
             <!-- <button class="btn btn-info mx-2">Dark Mode</button> -->
         </div>
         <input type="file" id="fileInput" style="display: none;" multiple>
         <!-- Links list will be displayed here -->
         <!-- File List Modal -->
-<div class="modal fade" id="fileListModal" tabindex="-1" role="dialog" aria-labelledby="fileListModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content bg-dark text-white">
-            <div class="modal-header">
-                <h5 class="modal-title" id="fileListModalLabel">📂 Shared Files</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- <button class="btn btn-danger mb-3" onclick="deleteAllFiles()">🗑️ Delete All</button> -->
-                <div id="fileListContent" style="max-height: 400px; overflow-y: auto;">
-                    Loading…
+        <div class="modal fade" id="fileListModal" tabindex="-1" role="dialog" aria-labelledby="fileListModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileListModalLabel">📂 Shared Files</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <button class="btn btn-danger mb-3" onclick="deleteAllFiles()">🗑️ Delete All</button> -->
+                        <div id="fileListContent" style="max-height: 400px; overflow-y: auto;">
+                            Loading…
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
     </div>
 
     <script>
@@ -345,7 +328,6 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
         function closeAlert() {
             document.getElementById('copyAlert').style.display = 'none';
         }
-
 
         // Function to display links from the text
         function displayLinks() {
@@ -408,67 +390,63 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
     </script>
     <script>
         document.getElementById('fileInput').addEventListener('change', function(event) {
-    const files = event.target.files;
-    const formData = new FormData();
-    let tooLarge = false;
+            const files = event.target.files;
+            const formData = new FormData();
+            let tooLarge = false;
 
-    for (let i = 0; i < files.length; i++) {
-        if (files[i].size > 262144000) { // Check for 250MB limit
-            tooLarge = true;
-            break;
-        }
-        formData.append('files[]', files[i]);
-    }
-
-    if (tooLarge) {
-        showAlert('uploadAlert', 'File size exceeds the 250MB limit. Please upload smaller files.', false);
-        return;
-    }
-
-    const xhr = new XMLHttpRequest();
-    xhr.upload.addEventListener('progress', function(e) {
-        if (e.lengthComputable) {
-            const percent = Math.round((e.loaded / e.total) * 100);
-            const progressBar = document.getElementById('uploadProgressBar');
-            progressBar.style.width = percent + '%';
-            progressBar.textContent = percent + '%';
-            document.getElementById('uploadProgressContainer').style.display = 'block';
-        }
-    });
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            document.getElementById('uploadProgressContainer').style.display = 'none';
-            if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
-                showAlert('uploadAlert', '✅ Files uploaded successfully!');
-                showFiles(); // Optional: refresh file list
-            } else {
-                showAlert('uploadAlert', 'Upload failed: ' + xhr.responseText, false);
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size > 262144000) { // Check for 250MB limit
+                    tooLarge = true;
+                    break;
+                }
+                formData.append('files[]', files[i]);
             }
-        }
-    };
 
-    xhr.open('POST', '', true);
-    xhr.send(formData);
-});
+            if (tooLarge) {
+                showAlert('uploadAlert', 'File size exceeds the 250MB limit. Please upload smaller files.', false);
+                return;
+            }
 
+            const xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    const progressBar = document.getElementById('uploadProgressBar');
+                    progressBar.style.width = percent + '%';
+                    progressBar.textContent = percent + '%';
+                    document.getElementById('uploadProgressContainer').style.display = 'block';
+                }
+            });
 
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    document.getElementById('uploadProgressContainer').style.display = 'none';
+                    if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
+                        showAlert('uploadAlert', 'Files uploaded successfully!');
+                        showFiles(); // Optional: refresh file list
+                    } else {
+                        showAlert('uploadAlert', 'Upload failed: ' + xhr.responseText, false);
+                    }
+                }
+            };
 
-
+            xhr.open('POST', '', true);
+            xhr.send(formData);
+        });
 
         function showFiles() {
-    fetch('?files=1')
-        .then(res => res.json())
-        .then(files => {
-            let html = '';
+            fetch('?files=1')
+                .then(res => res.json())
+                .then(files => {
+                    let html = '';
 
-            if (files.length) {
-                // Only show "Delete All" if files > 2
-                if (files.length > 2) {
-                    html += `<button class="btn btn-danger mb-3" onclick="deleteAllFiles()">🗑️ Delete All</button>`;
-                }
+                    if (files.length) {
+                        // Only show "Delete All" if files > 2
+                        if (files.length > 2) {
+                            html += `<button class="btn btn-danger mb-3" onclick="deleteAllFiles()">🗑️ Delete All</button>`;
+                        }
 
-                html += files.map(f => `
+                        html += files.map(f => `
                     <div class="d-flex justify-content-between align-items-center border p-2 my-2 bg-secondary rounded">
                         <div>
                             <strong>${f.name}</strong><br>
@@ -480,62 +458,57 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
                         </div>
                     </div>
                 `).join('');
-            } else {
-                html = 'No files yet.';
-            }
+                    } else {
+                        html = 'No files yet.';
+                    }
 
-            document.getElementById('fileListContent').innerHTML = html;
-            $('#fileListModal').modal('show');
-        });
-}
+                    document.getElementById('fileListContent').innerHTML = html;
+                    $('#fileListModal').modal('show');
+                });
+        }
 
+        function deleteFile(fileName) {
+            fetch('?delete=' + fileName)
+                .then(res => res.text())
+                .then(result => {
+                    if (result === 'deleted') {
+                        showAlert('deleteAlert', 'File deleted successfully!');
+                        showFiles(); // Refresh file list
+                    } else {
+                        showAlert('deleteAlert', 'Failed to delete file.', false);
+                    }
+                });
+        }
 
-function deleteFile(fileName) {
-    fetch('?delete=' + fileName)
-        .then(res => res.text())
-        .then(result => {
-            if (result === 'deleted') {
-                showAlert('deleteAlert', '✅ File deleted successfully!');
-                showFiles(); // Refresh file list
-            } else {
-                showAlert('deleteAlert', '❌ Failed to delete file.', false);
-            }
-        });
-}
+        function deleteAllFiles() {
+            fetch('?delete=all')
+                .then(res => res.text())
+                .then(result => {
+                    if (result === 'deleted') {
+                        showAlert('deleteAlert', '🗑️ All files deleted successfully!');
+                        showFiles(); // Refresh list
+                    } else {
+                        showAlert('deleteAlert', 'Failed to delete all files.', false);
+                    }
+                });
+        }
 
-function deleteAllFiles() {
-    fetch('?delete=all')
-        .then(res => res.text())
-        .then(result => {
-            if (result === 'deleted') {
-                showAlert('deleteAlert', '🗑️ All files deleted successfully!');
-                showFiles(); // Refresh list
-            } else {
-                showAlert('deleteAlert', '❌ Failed to delete all files.', false);
-            }
-        });
-}
+        function showAlert(id, message, isSuccess = true) {
+            const alertBox = document.getElementById(id);
+            alertBox.classList.remove('alert-success', 'alert-danger');
+            alertBox.classList.add(isSuccess ? 'alert-success' : 'alert-danger');
+            alertBox.innerHTML = message + '<button type="button" class="close" onclick="closeAlert(\'' + id + '\')">&times;</button>';
+            alertBox.style.display = 'block';
+            setTimeout(() => alertBox.style.display = 'none', 3000);
+        }
 
-function showAlert(id, message, isSuccess = true) {
-    const alertBox = document.getElementById(id);
-    alertBox.classList.remove('alert-success', 'alert-danger');
-    alertBox.classList.add(isSuccess ? 'alert-success' : 'alert-danger');
-    alertBox.innerHTML = message + '<button type="button" class="close" onclick="closeAlert(\'' + id + '\')">&times;</button>';
-    alertBox.style.display = 'block';
-    setTimeout(() => alertBox.style.display = 'none', 3000);
-}
-
-function closeAlert(id) {
-    document.getElementById(id).style.display = 'none';
-}
-
-
-
+        function closeAlert(id) {
+            document.getElementById(id).style.display = 'none';
+        }
     </script>
     <!-- at the very end of body, BEFORE your custom <script> blocks: -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
