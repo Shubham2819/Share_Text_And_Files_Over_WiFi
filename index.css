@@ -1,60 +1,60 @@
 /* ====== Container and Header Styles My CSS ====== */
-   .container {
-            text-align: center;
-        }
+.container {
+    text-align: center;
+}
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #1e2931;
-        }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1e2931;
+}
 
-        .header .logo {
-            font-size: 24px;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-        }
+.header .logo {
+    font-size: 24px;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}
 
-        /* Dark Theme */
-        body.dark-mode {
-            background-color: #181e22;
-            color: #fff;
-        }
+/* Dark Theme */
+body.dark-mode {
+    background-color: #181e22;
+    color: #fff;
+}
 
-        /* Light Theme */
-        body.light-mode {
-            background-color: #fff;
-            color: #333;
-        }
+/* Light Theme */
+body.light-mode {
+    background-color: #fff;
+    color: #333;
+}
 
-        #themeSwitcher {
-            /* position: absolute; */
-            /* position: fixed; */
-            right: 10px;
-            top: 10px;
-            z-index: 9999;
-        }
+#themeSwitcher {
+    /* position: absolute; */
+    /* position: fixed; */
+    right: 10px;
+    top: 10px;
+    z-index: 9999;
+}
 
-        textarea {
-            width: 70%;
-            /* height: 350px; */
-            margin: 20px auto;
-            color: #fff;
-            font-size: large;
-            background-color: #1e2931;
-            /* Set the background color here */
-            border: 2px solid #ccc;
-            /* Optional: Add a border for better visibility */
-            padding: 10px;
-            /* Optional: Add padding for better appearance */
-            text-decoration: none;
-        }
+textarea {
+    width: 70%;
+    /* height: 350px; */
+    margin: 20px auto;
+    color: #fff;
+    font-size: large;
+    background-color: #1e2931;
+    /* Set the background color here */
+    border: 2px solid #ccc;
+    /* Optional: Add a border for better visibility */
+    padding: 10px;
+    /* Optional: Add padding for better appearance */
+    text-decoration: none;
+}
 
-        /* Responsive adjustments for textarea */
+/* Responsive adjustments for textarea */
 
-        /* Large screens - 1600px and above */
+/* Large screens - 1600px and above */
 @media (min-width: 1600px) {
     textarea {
         width: 85%;
@@ -118,7 +118,7 @@
     }
 }
 
-        /* @media (min-width: 1400px) {
+/* @media (min-width: 1400px) {
             textarea {
                 width: 80%;
                 height: 300px;
@@ -176,22 +176,22 @@
             }
         } */
 
-   
-        #linksList {
-            display: none;
-           
-            margin-top: 20px;
-            list-style-type: none;
-            padding: 0;
-        }
 
-        #linksList li {
-            background-color: #1e2931;
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-            text-align: left;
-        }
+#linksList {
+    display: none;
+
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+}
+
+#linksList li {
+    background-color: #1e2931;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    text-align: left;
+}
 
 
 
