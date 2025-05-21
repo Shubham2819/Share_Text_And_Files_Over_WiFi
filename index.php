@@ -22,14 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
         $fileSize = $_FILES['files']['size'][$index];
         $target = $uploadDir . $fileName;
 
+
         // Check if file size exceeds the limit
-        if ($fileSize > 262144000) { // 250MB file size limit
-            echo 'File size exceeds 250MB!';
+        if ($fileSize > (2 * 1024 * 1024 * 1024)) { // file size limit
+            echo 'File size exceeds ! !';
             exit;
         }
 
         // Move file if it's under the size limit
-        if ($fileSize <= 262144000) {
+        if ($fileSize <= (2 * 1024 * 1024 * 1024)) {
             if (!move_uploaded_file($tmpName, $target)) {
                 $success = false;
                 break;
@@ -86,135 +87,15 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
     <title>Shubham Text over WiFi</title>
     <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .container {
-            text-align: center;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #1e2931;
-        }
-
-        .header .logo {
-            font-size: 24px;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-        }
-
-
-
-        /* Dark Theme */
-        body.dark-mode {
-            background-color: #181e22;
-            color: #fff;
-        }
-
-        /* Light Theme */
-        body.light-mode {
-            background-color: #fff;
-            color: #333;
-        }
-
-        #themeSwitcher {
-            position: fixed;
-            right: 10px;
-            top: 10px;
-            z-index: 9999;
-        }
-
-        textarea {
-            width: 70%;
-            /* height: 350px; */
-            margin: 20px auto;
-            color: #fff;
-            font-size: large;
-            background-color: #1e2931;
-            /* Set the background color here */
-            border: 2px solid #ccc;
-            /* Optional: Add a border for better visibility */
-            padding: 10px;
-            /* Optional: Add padding for better appearance */
-            text-decoration: none;
-        }
-
-        /* Responsive adjustments for textarea */
-        @media (max-width: 1400px) {
-            textarea {
-                width: 80%;
-                height: 300px;
-                text-decoration: none;
-            }
-        }
-
-
-        @media (max-width: 1200px) {
-            textarea {
-                width: 80%;
-                height: 300px;
-                text-decoration: none;
-            }
-        }
-
-        @media (max-width: 992px) {
-            textarea {
-                width: 100%;
-                height: 1200px;
-                /* color: #fff; */
-                font-size: x-large;
-                text-decoration: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            textarea {
-                width: 95%;
-                height: 400px;
-                text-decoration: none;
-            }
-        }
-
-        @media (max-width: 576px) {
-            textarea {
-                width: 100%;
-                height: 30px;
-                text-decoration: none;
-            }
-        }
-
-        @media (max-width: 230px) {
-            textarea {
-                width: 100%;
-                height: 30px;
-                text-decoration: none;
-            }
-        }
-
-        /* List of Links */
-        #linksList {
-            display: none;
-            /* hidden initially */
-            margin-top: 20px;
-            list-style-type: none;
-            padding: 0;
-        }
-
-        #linksList li {
-            background-color: #1e2931;
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-            text-align: left;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
+    <!-- <style>
+       
+    </style> -->
 </head>
 
 <body class="light-mode">
     <div class="header">
-        <div class="logo">Share Text</div>
+        <div class="logo">Share here</div>
         <button id="themeSwitcher" class="btn btn-secondary" onclick="toggleTheme()">Light Mode</button>
     </div>
     <!-- progress bar and upload alert -->
@@ -226,7 +107,7 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
         </div>
     </div>
     <div class="container mt-4">
-        <h1>Share Text over WiFi!</h1>
+        <h1>Share Text And Files over WiFi!</h1>
         <textarea id="textInput" name="text"><?php echo htmlspecialchars($sharedText); ?></textarea>
         <br>
         <ul id="linksList"></ul>
@@ -387,15 +268,17 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
         document.addEventListener('DOMContentLoaded', function() {
             toggleTheme(); // Call the toggleTheme function to set the initial theme
         });
-    </script>
-    <script>
+
+
         document.getElementById('fileInput').addEventListener('change', function(event) {
             const files = event.target.files;
             const formData = new FormData();
             let tooLarge = false;
-
+            // debugger;
             for (let i = 0; i < files.length; i++) {
-                if (files[i].size > 262144000) { // Check for 250MB limit
+                // debugger;
+                if ((files[i].size / (1024 * 1024 * 1024)) > 2) { // Check for 2 GB limit
+                    // debugger;
                     tooLarge = true;
                     break;
                 }
@@ -403,20 +286,68 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
             }
 
             if (tooLarge) {
-                showAlert('uploadAlert', 'File size exceeds the 250MB limit. Please upload smaller files.', false);
+                showAlert('uploadAlert', 'File size exceeds the 2 GB limit. Please upload smaller files.', false);
                 return;
             }
 
             const xhr = new XMLHttpRequest();
+
+            let startTime = Date.now(); // Capture the start time
+
             xhr.upload.addEventListener('progress', function(e) {
                 if (e.lengthComputable) {
                     const percent = Math.round((e.loaded / e.total) * 100);
+
+                    // Calculate upload speed
+                    const elapsedTime = (Date.now() - startTime) / 1000; // Time in seconds
+                    const speed = e.loaded / elapsedTime; // Bytes per second
+                    const speedInKBps = (speed / 1024).toFixed(2); // Convert to KB/s
+                    const speedInMBps = (speed / (1024 * 1024)).toFixed(2); // Convert to MB/s
+
+                    const remainingBytes = e.total - e.loaded;
+                    const estimatedTimeRemaining = (remainingBytes / speed).toFixed(1); // in seconds
+
+                    // Update the progress bar in the UI
                     const progressBar = document.getElementById('uploadProgressBar');
                     progressBar.style.width = percent + '%';
                     progressBar.textContent = percent + '%';
                     document.getElementById('uploadProgressContainer').style.display = 'block';
+
+                    // 👇 Show progress and speed in the browser console
+                    console.log(`Uploading... ${percent}% | File Size:(${(e.loaded / (1024 * 1024)).toFixed(2)} MB of ${(e.total / (1024 * 1024)).toFixed(2)} MB) | Uploading Speed... ${speedInKBps} KB/s (${speedInMBps} MB/s)`);
+                    // console.log(`Uploading: ${percent}% (${(e.loaded / (1024 * 1024)).toFixed(2)} MB of ${(e.total / (1024 * 1024)).toFixed(2)} MB)`);
+
+                    // display upload speed and estimated time remaining In seconds
+                    console.log(`Speed: ${speedInKBps} KB/s (${speedInMBps} MB/s) | Estimated time left: ${estimatedTimeRemaining} seconds`);
+                    // console.log(`Estimated time left: ${estimatedTimeRemaining} seconds`);
+
+
+                    // Convert estimated time remaining to minutes and seconds
+                    const estimatedTimeRemainingInSeconds = Math.floor(estimatedTimeRemaining);
+                    const estimatedTimeRemainingInMinutes = Math.floor(estimatedTimeRemainingInSeconds / 60);
+                    const estimatedTimeRemainingInSecondsRemainder = Math.floor(estimatedTimeRemainingInSeconds % 60);
+                    console.log(`Estimated time left: ${estimatedTimeRemainingInMinutes}m ${estimatedTimeRemainingInSecondsRemainder}s`);
+                    //  display upload speed and estimated time remaining In minuts  seconds
+
+                    const minutes = Math.floor(estimatedTimeRemaining / 60);
+                    const seconds = Math.floor(estimatedTimeRemaining % 60);
+                    console.log(`Time remaining: ${minutes}m ${seconds}s`);
+
                 }
             });
+
+
+            // xhr.upload.addEventListener('progress', function(e) {
+            //     if (e.lengthComputable) {
+            //         const percent = Math.round((e.loaded / e.total) * 100);
+            //         const progressBar = document.getElementById('uploadProgressBar');
+            //         progressBar.style.width = percent + '%';
+            //         progressBar.textContent = percent + '%';
+            //         document.getElementById('uploadProgressContainer').style.display = 'block';
+            //          // ✅ Log to console
+            //         console.log(`Uploading: ${percent}% (${(e.loaded / (1024 * 1024)).toFixed(2)} MB of ${(e.total / (1024 * 1024)).toFixed(2)} MB)`);
+            //     }
+            // });
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
@@ -449,7 +380,8 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
                         html += files.map(f => `
                     <div class="d-flex justify-content-between align-items-center border p-2 my-2 bg-secondary rounded">
                         <div>
-                            <strong>${f.name}</strong><br>
+                            <strong>${f.name}</strong>
+                            <!--<br>-->
                             <small>${f.time}</small>
                         </div>
                         <div>
@@ -511,4 +443,4 @@ $text = file_exists('shared_text.txt') ? file_get_contents('shared_text.txt') : 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>
+</html

@@ -1,0 +1,295 @@
+/* ====== Container and Header Styles My CSS ====== */
+   .container {
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1e2931;
+        }
+
+        .header .logo {
+            font-size: 24px;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Dark Theme */
+        body.dark-mode {
+            background-color: #181e22;
+            color: #fff;
+        }
+
+        /* Light Theme */
+        body.light-mode {
+            background-color: #fff;
+            color: #333;
+        }
+
+        #themeSwitcher {
+            /* position: absolute; */
+            /* position: fixed; */
+            right: 10px;
+            top: 10px;
+            z-index: 9999;
+        }
+
+        textarea {
+            width: 70%;
+            /* height: 350px; */
+            margin: 20px auto;
+            color: #fff;
+            font-size: large;
+            background-color: #1e2931;
+            /* Set the background color here */
+            border: 2px solid #ccc;
+            /* Optional: Add a border for better visibility */
+            padding: 10px;
+            /* Optional: Add padding for better appearance */
+            text-decoration: none;
+        }
+
+        /* Responsive adjustments for textarea */
+
+        /* Large screens - 1600px and above */
+@media (min-width: 1600px) {
+    textarea {
+        width: 85%;
+        height: 350px;
+        text-decoration: none;
+    }
+}
+
+/* Between 1200px and 1599px */
+@media (min-width: 1200px) and (max-width: 1599px) {
+    textarea {
+        width: 80%;
+        height: 300px;
+        text-decoration: none;
+    }
+}
+
+/* Medium screens - below 1200px */
+@media (max-width: 1199px) {
+    textarea {
+        width: 80%;
+        height: 300px;
+        text-decoration: none;
+    }
+}
+
+/* Small desktops and tablets */
+@media (max-width: 992px) {
+    textarea {
+        width: 100%;
+        height: 1200px;
+        font-size: x-large;
+        text-decoration: none;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    textarea {
+        width: 95%;
+        height: 400px;
+        text-decoration: none;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 576px) {
+    textarea {
+        width: 100%;
+        height: 30px;
+        text-decoration: none;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 230px) {
+    textarea {
+        width: 100%;
+        height: 30px;
+        text-decoration: none;
+    }
+}
+
+        /* @media (min-width: 1400px) {
+            textarea {
+                width: 80%;
+                height: 300px;
+                text-decoration: none;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            textarea {
+                width: 80%;
+                height: 300px;
+                text-decoration: none;
+            }
+        }
+
+
+        @media (max-width: 1200px) {
+            textarea {
+                width: 80%;
+                height: 300px;
+                text-decoration: none;
+            }
+        }
+
+        @media (max-width: 992px) {
+            textarea {
+                width: 100%;
+                height: 1200px;
+                font-size: x-large;
+                text-decoration: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            textarea {
+                width: 95%;
+                height: 400px;
+                text-decoration: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            textarea {
+                width: 100%;
+                height: 30px;
+                text-decoration: none;
+            }
+        }
+
+        @media (max-width: 230px) {
+            textarea {
+                width: 100%;
+                height: 30px;
+                text-decoration: none;
+            }
+        } */
+
+   
+        #linksList {
+            display: none;
+           
+            margin-top: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #linksList li {
+            background-color: #1e2931;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+
+
+/* ====== Container and Header Styles BY GPT ====== */
+/* .container {
+    text-align: center !important;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 20px !important;
+    background-color: #1e2931 !important;
+}
+
+.header .logo {
+    font-size: 24px;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+} */
+
+/* ====== Theme Modes ====== */
+/* body.dark-mode {
+    background-color: #181e22 !important;
+    color: #fff !important;
+}
+
+body.light-mode {
+    background-color: #fff !important;
+    color: #333 !important;
+} */
+
+/* ====== Theme Switcher Button ====== */
+/* #themeSwitcher {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    z-index: 9999;
+} */
+
+/* ====== Textarea Styling ====== */
+/* textarea {
+    width: 70%;
+    margin: 20px auto;
+    font-size: large;
+    color: #fff;
+    background-color: #1e2931;
+    border: 2px solid #ccc;
+    padding: 10px;
+    text-decoration: none;
+} */
+
+/* ====== Responsive Textarea Sizing ====== */
+/* @media (min-width: 1400px),
+       (max-width: 1400px),
+       (max-width: 1200px) {
+    textarea {
+        width: 80%;
+        height: 300px;
+    }
+}
+
+@media (max-width: 992px) {
+    textarea {
+        width: 100%;
+        height: 1200px;
+        font-size: x-large;
+    }
+}
+
+@media (max-width: 768px) {
+    textarea {
+        width: 95%;
+        height: 400px;
+    }
+}
+
+@media (max-width: 576px),
+       (max-width: 230px) {
+    textarea {
+        width: 100%;
+        height: 30px;
+    }
+} */
+
+/* ====== List of Links ====== */
+/* #linksList {
+    display: none;
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+}
+
+#linksList li {
+    background-color: #1e2931;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    text-align: left;
+} */
